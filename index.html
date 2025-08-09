@@ -24,9 +24,9 @@ d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").select
 .attr("cx",function(d,i){return x(d.Tempo);})
 .attr("cy",function(d,i){return y(d.Views);})
 .attr("r",function(d,i){return 2;})
-d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d3.axisLeft(y).tickValues([10,20,50,8000000000]).tickFormat(d3.format("~s")));
+d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d3.axisLeft(y).tickValues([200000000, 500000000,1000000000,2000000000,4000000000,8000000000]).tickFormat(d3.format("~s")));
 
-d3.select("svg").append("g").attr("transform","translate("+50+","+250+")").call(d3.axisBottom(x).tickValues([10,20,50,250]).tickFormat(d3.format("~s")));
+d3.select("svg").append("g").attr("transform","translate("+50+","+250+")").call(d3.axisBottom(x).tickValues([50,100,150,200,250]).tickFormat(d3.format("~s")));
 
   
 //d3.select("body").selectAll("p").data(data).enter().append("p").html(function(d,i){return d.Artist + maxViews;})
