@@ -4,19 +4,16 @@
 <head>
   <h1>Javascript supports arrays with numerical indices but with arbitrarily typed elements</h1>
 </head>
-<body onload='init()'>
+<body>
+<button onclick='initTempo()'>Tempo</button>
 <svg width=300 height=300>
 </svg>
 <script>
-async function init() {
+async function initTempo() {
 data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_viewed.csv")
 
 var maxViews = d3.max(data, function(d) { return +d.Views; } );
 var maxTempo = d3.max(data, function(d) { return +d.Tempo; } );
-
-  
-
-
 var y = d3.scaleLog().domain([200000000,maxViews]).range([200,0]);
 var x = d3.scaleLog().domain([50,maxTempo]).range([0,200]);
 
