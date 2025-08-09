@@ -14,14 +14,14 @@ data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_
 
 var maxViews = d3.max(data, function(d) { return +d.Views; } );
 var maxTempo = d3.max(data, function(d) { return +d.Tempo; } );
-var y = d3.scaleLog().domain([200000000,maxViews]).range([200,0]);
+var y = d3.scaleLog().domain([230000000,maxViews]).range([200,0]);
 var x = d3.scaleLog().domain([50,maxTempo]).range([0,200]);
 
 d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").selectAll("circle").data(data).enter().append("circle")
 .attr("cx",function(d,i){return x(d.Tempo);})
 .attr("cy",function(d,i){return y(d.Views);})
 .attr("r",function(d,i){return 2;})
-d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d3.axisLeft(y).tickValues([200000000, 500000000,1000000000,2000000000,4000000000,8000000000]).tickFormat(d3.format("~s")));
+d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d3.axisLeft(y).tickValues([230000000, 500000000,1000000000,2000000000,4000000000,8100000000]).tickFormat(d3.format("~s")));
 
 d3.select("svg").append("g").attr("transform","translate("+50+","+250+")").call(d3.axisBottom(x).tickValues([50,100,150,200,250]).tickFormat(d3.format("~s")));
 
