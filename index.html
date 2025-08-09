@@ -9,7 +9,11 @@
 <button onclick='initTempo()'>Tempo</button>
 <button onclick='initDuration()'>Duration</button>
 <button onclick='initEnergy()'>Intensity</button>
+<button onclick='initValence()'>Valence</button>
+<button onclick='initAcousticness()'>Acousticness</button>
 
+<div>
+</div>
 <svg width=300 height=300>
 </svg>
 <script>
@@ -70,8 +74,33 @@ d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d
 d3.select("svg").append("g").attr("transform","translate("+50+","+250+")").call(d3.axisBottom(x).tickValues([0,0.2,0.4,0.6,0.8,1]).tickFormat(d3.format("~s")));
 
 }
+async function initValence() {
+d3.select("svg").selectAll("g").remove();
+var x = d3.scaleLinear().domain([0,1]).range([0,200]);
 
+d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").selectAll("circle").data(data).enter().append("circle")
+.attr("cx",function(d,i){return x(d.Valence);})
+.attr("cy",function(d,i){return y(d.Views);})
+.attr("r",function(d,i){return 2;})
+d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d3.axisLeft(y).tickValues([230000000, 500000000,1000000000,2000000000,4000000000,8100000000]).tickFormat(d3.format("~s")));
+
+d3.select("svg").append("g").attr("transform","translate("+50+","+250+")").call(d3.axisBottom(x).tickValues([0,0.2,0.4,0.6,0.8,1]).tickFormat(d3.format("~s")));
+
+}
   
+async function initAcousticness() {
+d3.select("svg").selectAll("g").remove();
+var x = d3.scaleLinear().domain([0,1]).range([0,200]);
+
+d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").selectAll("circle").data(data).enter().append("circle")
+.attr("cx",function(d,i){return x(d.Acousticness);})
+.attr("cy",function(d,i){return y(d.Views);})
+.attr("r",function(d,i){return 2;})
+d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d3.axisLeft(y).tickValues([230000000, 500000000,1000000000,2000000000,4000000000,8100000000]).tickFormat(d3.format("~s")));
+
+d3.select("svg").append("g").attr("transform","translate("+50+","+250+")").call(d3.axisBottom(x).tickValues([0,0.2,0.4,0.6,0.8,1]).tickFormat(d3.format("~s")));
+
+}
 </script>
 </body>
 </html>
