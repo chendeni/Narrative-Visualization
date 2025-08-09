@@ -17,8 +17,8 @@ var maxTempo = d3.max(data, function(d) { return +d.Tempo; } );
   
 
 
-var y = d3.scaleLog().domain([10,maxViews]).range([200,0]);
-var x = d3.scaleLog().domain([10,maxTempo]).range([0,200]);
+var y = d3.scaleLog().domain([200000000,maxViews]).range([200,0]);
+var x = d3.scaleLog().domain([50,maxTempo]).range([0,200]);
 
 d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").selectAll("circle").data(data).enter().append("circle")
 .attr("cx",function(d,i){return x(d.Tempo);})
