@@ -6,11 +6,12 @@
 </head>
 <body onload = "init()">
   
-<button onclick='displayScatterplot("Tempo", [50,200], [50,100,150,200], "log")'>Tempo</button>
-<button onclick='displayScatterplot("Duration_ms", [100000,700000], [100000,200000,400000,700000], "log")'>Duration</button>
-<button onclick='displayScatterplot("Energy", [0,1], [0,0.2,0.4,0.6,0.8,1], "linear")'>Intensity</button>
-<button onclick='displayScatterplot("Valence", [0,1], [0,0.2,0.4,0.6,0.8,1], "linear")'>Valence</button>
-<button onclick='displayScatterplot("Acousticness", [0,1], [0,0.2,0.4,0.6,0.8,1], "linear")'>Acousticness</button>
+<button onclick='plot("Tempo")'>Tempo</button>
+<button onclick='plot("Duration")'>Duration</button>
+<button onclick='plot("Intensity")'>Intensity</button>
+<button onclick='plot("Valence")'>Valence</button>
+<button onclick='plot("Acousticness")'>Acousticness</button>
+<button onclick='plot("Loudness")'>Loudness</button>
 
 <div>
 </div>
@@ -20,15 +21,64 @@
 
 async function init(){
   width = 600;
+  margin = 50;
+  currentPlot = "Tempo";
   data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_viewed.csv");
   maxViews = d3.max(data, function(d) { return +d.Views; } );
   y = d3.scaleLog().domain([230000000,maxViews]).range([width,0]);
+  y_ticks = [230000000, 500000000,1000000000,2000000000,4000000000,8100000000];
+} 
+
+  
+async function plot(plotName){
+  currentPlot = plotName;
+  switch(plotName)
+  {
+    case "Tempo":
+      displayScatterplot("Tempo", [50,200], [50,100,150,200], "log");
+      break;
+    case "Duration":
+      displayScatterplot("Duration_ms", [100000,700000], [100000,200000,400000,700000], "log")
+      break;
+    case "Intensity":
+      displayScatterplot("Energy", [0,1], [0,0.2,0.4,0.6,0.8,1], "linear");
+      break;
+    case "Valence":
+      displayScatterplot("Valence", [0,1], [0,0.2,0.4,0.6,0.8,1], "linear")
+      break;
+    case "Acousticness":
+      displayScatterplot("Acousticness", [0,1], [0,0.2,0.4,0.6,0.8,1], "linear");
+      break;
+    case "Loudness":
+      displayScatterplot("Loudness", [-20,1], [-20,-15,-10,-5,0], "linear");
+      break;
+    default:
+      displayScatterplot("Tempo", [50,200], [50,100,150,200], "log");
+  }
+  /*
+  switch(plotName)
+  {
+    case "Tempo":
+      valueName = "Tempo";
+      x_domain = [50,200];
+      x_ticks = [50,100,150,200];
+      scaleType = "log";
+      break;
+    default:
+      valueName = "Tempo";
+      x_domain = [50,200];
+      x_ticks = [50,100,150,200];
+      scaleType = "log";
+  }
+    displayScatterplot(valueName, x_domain, x_ticks, scaleType);
+  */
 }
 
+  
 async function displayScatterplot(valueName, x_domain, x_ticks, scaleType) {
 d3.select("svg").selectAll("g").remove();
-
-var maxValue = d3.max(data, function(d) { return +d[valueName]; } );
+//var maxValue = d3.max(data, function(d) { return +d[valueName]; } );
+  
 var x;
 if(scaleType == "log")
 {
@@ -39,13 +89,13 @@ else
   x = d3.scaleLinear().domain(x_domain).range([0,width]);
 }
 
-d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").selectAll("circle").data(data).enter().append("circle")
+d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")").selectAll("circle").data(data).enter().append("circle")
 .attr("cx",function(d,i){return x(d[valueName]);})
 .attr("cy",function(d,i){return y(d.Views);})
 .attr("r",function(d,i){return 2;})
-d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d3.axisLeft(y).tickValues([230000000, 500000000,1000000000,2000000000,4000000000,8100000000]).tickFormat(d3.format("~s")));
+d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")").call(d3.axisLeft(y).tickValues(y_ticks).tickFormat(d3.format("~s")));
 
-d3.select("svg").append("g").attr("transform","translate("+50+","+(50+width)+")").call(d3.axisBottom(x).tickValues(x_ticks).tickFormat(d3.format("~s")));
+d3.select("svg").append("g").attr("transform","translate("+margin+","+(margin+width)+")").call(d3.axisBottom(x).tickValues(x_ticks).tickFormat(d3.format("~s")));
 
   
 //d3.select("body").selectAll("p").data(data).enter().append("p").html(function(d,i){return d.Artist + maxViews;}) 
