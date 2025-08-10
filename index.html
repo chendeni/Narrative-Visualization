@@ -51,11 +51,13 @@ async function changeData(dataSize = 0, popularityMetric = ""){
     data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset.csv");
     if(currentMetric == "Views")
     {
+          y_label = "View Count";
           y_ticks = [10, 500000000,1000000000,2000000000,4000000000,8100000000];
           //y = d3.scaleLog().domain([y_ticks[0],y_ticks[y_ticks.length - 1]]).range([width,0]);
     }
     else if(currentMetric == "Stream")
     {
+          y_label = "Stream Count";
           y_ticks = [10, 500000000,1000000000,2000000000,3400000000];
           //y = d3.scaleLog().domain([y_ticks[0],y_ticks[y_ticks.length - 1]]).range([width,0]);
     }
@@ -64,11 +66,13 @@ async function changeData(dataSize = 0, popularityMetric = ""){
   {
     if(currentMetric == "Views")
     {
+          y_label = "View Count";
           data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_viewed.csv");
           y_ticks = [230000000, 500000000,1000000000,2000000000,4000000000,8100000000];
     }
     else if(currentMetric == "Stream")
     {
+          y_label = "Stream Count";
           data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_streamed.csv");
           y_ticks = [340000000, 500000000,1000000000,2000000000,3400000000];
 
@@ -108,25 +112,25 @@ async function plot(plotName){
   switch(plotName)
   {
     case "Tempo":
-      displayScatterplot("Tempo", [50,200], [50,100,150,200], "log");
+      displayScatterplot("Tempo", [50,200], [50,100,150,200], "Tempo (BPM)", "log");
       break;
     case "Duration":
-      displayScatterplot("Duration_ms", [100000,700000], [100000,200000,400000,700000], "log")
+      displayScatterplot("Duration_ms", [100000,700000], [100000,200000,400000,700000],"Duration (seconds)", "log")
       break;
     case "Intensity":
-      displayScatterplot("Energy", [0,1], [0,0.2,0.4,0.6,0.8,1], "linear");
+      displayScatterplot("Energy", [0,1], [0,0.2,0.4,0.6,0.8,1], "Intensity", "linear");
       break;
     case "Valence":
-      displayScatterplot("Valence", [0,1], [0,0.2,0.4,0.6,0.8,1], "linear")
+      displayScatterplot("Valence", [0,1], [0,0.2,0.4,0.6,0.8,1], "Valence", "linear")
       break;
     case "Acousticness":
-      displayScatterplot("Acousticness", [0,1], [0,0.2,0.4,0.6,0.8,1], "linear");
+      displayScatterplot("Acousticness", [0,1], [0,0.2,0.4,0.6,0.8,1], "Acousticness", "linear");
       break;
     case "Loudness":
-      displayScatterplot("Loudness", [-20,1], [-20,-15,-10,-5,0], "linear");
+      displayScatterplot("Loudness", [-20,1], [-20,-15,-10,-5,0], "Loudness (dBFS)", "linear");
       break;
     default:
-      displayScatterplot("Tempo", [50,200], [50,100,150,200], "log");
+      displayScatterplot("Tempo", [50,200], [50,100,150,200], "Tempo (BPM)", "log");
   }
   /*
   switch(plotName)
@@ -148,9 +152,11 @@ async function plot(plotName){
 }
 
   
-async function displayScatterplot(valueName, x_domain, x_ticks, scaleType) {
+async function displayScatterplot(valueName, x_domain, x_ticks, x_label, scaleType) {
 d3.select("svg").selectAll("g").remove();
-//var maxValue = d3.max(data, function(d) { return +d[valueName]; } );
+d3.select("svg").selectAll("text").remove();
+
+  //var maxValue = d3.max(data, function(d) { return +d[valueName]; } );
   
 var x;
 if(scaleType == "log")
@@ -170,8 +176,10 @@ d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")"
 
 d3.select("svg").append("g").attr("transform","translate("+margin+","+(margin+width)+")").call(d3.axisBottom(x).tickValues(x_ticks).tickFormat(d3.format("~s")));
 
-  
-//d3.select("body").selectAll("p").data(data).enter().append("p").html(function(d,i){return d.Artist + maxViews;}) 
+d3.select("svg").append("text").attr("transform","translate("+(margin+(width/2))+","+((1.75*margin)+width)+")").style("text-anchor", "middle").text(x_label);
+d3.select("svg").append("text").attr("transform","translate("+(0.25*margin)+","+(margin+(0.5*width))+") rotate(-90)").style("text-anchor", "middle").text(y_label);
+
+  //d3.select("body").selectAll("p").data(data).enter().append("p").html(function(d,i){return d.Artist + maxViews;}) 
 }
 
 
