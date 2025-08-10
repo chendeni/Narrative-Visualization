@@ -52,13 +52,13 @@ async function changeData(dataSize = 0, popularityMetric = ""){
     if(currentMetric == "Views")
     {
           y_label = "View Count";
-          y_ticks = [10, 500000000,1000000000,2000000000,4000000000,8100000000];
+          y_ticks = [100, 500000000,1000000000,2000000000,4000000000,8100000000];
           //y = d3.scaleLog().domain([y_ticks[0],y_ticks[y_ticks.length - 1]]).range([width,0]);
     }
     else if(currentMetric == "Stream")
     {
           y_label = "Stream Count";
-          y_ticks = [10, 500000000,1000000000,2000000000,3400000000];
+          y_ticks = [100, 500000000,1000000000,2000000000,3400000000];
           //y = d3.scaleLog().domain([y_ticks[0],y_ticks[y_ticks.length - 1]]).range([width,0]);
     }
   }
@@ -112,25 +112,39 @@ async function plot(plotName){
   switch(plotName)
   {
     case "Tempo":
-      displayScatterplot("Tempo", [50,200], [50,100,150,200], "Tempo (BPM)", "log");
+      displayScatterplot("Tempo", [50,200], [50,100,150,200], "Tempo (BPM)",".0f", "log");
       break;
     case "Duration":
-      displayScatterplot("Duration_ms", [100000,700000], [100000,200000,400000,700000],"Duration (seconds)", "log")
+      if(currentDataSize == -1)
+      {
+        displayScatterplot("Duration_ms", [40000,700000], [40000,100000,200000,400000,700000],"Duration (seconds)", "~s", "log");
+      }
+      else
+      {
+        displayScatterplot("Duration_ms", [100000,700000], [100000,200000,400000,700000],"Duration (seconds)", "~s", "log");
+      }
       break;
     case "Intensity":
-      displayScatterplot("Energy", [0,1], [0,0.2,0.4,0.6,0.8,1], "Intensity", "linear");
+      displayScatterplot("Energy", [0,1], [0,0.2,0.4,0.6,0.8,1], "Intensity", ".2f", "linear");
       break;
     case "Valence":
-      displayScatterplot("Valence", [0,1], [0,0.2,0.4,0.6,0.8,1], "Valence", "linear")
+      displayScatterplot("Valence", [0,1], [0,0.2,0.4,0.6,0.8,1], "Valence", ".2f", "linear")
       break;
     case "Acousticness":
-      displayScatterplot("Acousticness", [0,1], [0,0.2,0.4,0.6,0.8,1], "Acousticness", "linear");
+      displayScatterplot("Acousticness", [0,1], [0,0.2,0.4,0.6,0.8,1], "Acousticness", ".2f", "linear");
       break;
     case "Loudness":
-      displayScatterplot("Loudness", [-20,1], [-20,-15,-10,-5,0], "Loudness (dBFS)", "linear");
+      if(currentDataSize == -1)
+      {
+        displayScatterplot("Loudness", [-40,1], [-40,-30,-20,-10,0], "Loudness (dBFS)", ".2f", "linear");
+      }
+      else
+      {
+        displayScatterplot("Loudness", [-20,1], [-20,-15,-10,-5,0], "Loudness (dBFS)", ".2f", "linear");
+      }
       break;
     default:
-      displayScatterplot("Tempo", [50,200], [50,100,150,200], "Tempo (BPM)", "log");
+      displayScatterplot("Tempo", [50,200], [50,100,150,200], "Tempo (BPM)", ".2f", "log");
   }
   /*
   switch(plotName)
@@ -152,7 +166,7 @@ async function plot(plotName){
 }
 
   
-async function displayScatterplot(valueName, x_domain, x_ticks, x_label, scaleType) {
+async function displayScatterplot(valueName, x_domain, x_ticks, x_label, x_format, scaleType) {
 d3.select("svg").selectAll("g").remove();
 d3.select("svg").selectAll("text").remove();
 
@@ -174,7 +188,7 @@ d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")"
 .attr("r",function(d,i){return 2;})
 d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")").call(d3.axisLeft(y).tickValues(y_ticks).tickFormat(d3.format("~s")));
 
-d3.select("svg").append("g").attr("transform","translate("+margin+","+(margin+width)+")").call(d3.axisBottom(x).tickValues(x_ticks).tickFormat(d3.format("~s")));
+d3.select("svg").append("g").attr("transform","translate("+margin+","+(margin+width)+")").call(d3.axisBottom(x).tickValues(x_ticks).tickFormat(d3.format(x_format)));
 
 d3.select("svg").append("text").attr("transform","translate("+(margin+(width/2))+","+((1.75*margin)+width)+")").style("text-anchor", "middle").text(x_label);
 d3.select("svg").append("text").attr("transform","translate("+(0.25*margin)+","+(margin+(0.5*width))+") rotate(-90)").style("text-anchor", "middle").text(y_label);
