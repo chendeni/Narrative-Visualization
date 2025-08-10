@@ -2,15 +2,15 @@
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <style> circle {fill: lightblue; stroke: black;} </style>
 <head>
-  <h1>Javascript supports arrays with numerical indices but with arbitrarily typed elements</h1>
+  <h1>Most Popular Songs on Spotify and Youtube</h1>
 </head>
 <body onload = "init()">
   
-<button onclick='initTempo()'>Tempo</button>
-<button onclick='initDuration()'>Duration</button>
-<button onclick='initEnergy()'>Intensity</button>
-<button onclick='initValence()'>Valence</button>
-<button onclick='initAcousticness()'>Acousticness</button>
+<button onclick='displayScatterplot("Tempo", [50,200], [50,100,150,200], "log")'>Tempo</button>
+<button onclick='displayScatterplot("Duration_ms", [100000,700000], [100000,200000,400000,700000], "log")'>Duration</button>
+<button onclick='displayScatterplot("Energy", [0,1], [0,0.2,0.4,0.6,0.8,1], "linear")'>Intensity</button>
+<button onclick='displayScatterplot("Valence", [0,1], [0,0.2,0.4,0.6,0.8,1], "linear")'>Valence</button>
+<button onclick='displayScatterplot("Acousticness", [0,1], [0,0.2,0.4,0.6,0.8,1], "linear")'>Acousticness</button>
 
 <div>
 </div>
@@ -24,6 +24,39 @@ async function init(){
   maxViews = d3.max(data, function(d) { return +d.Views; } );
   y = d3.scaleLog().domain([230000000,maxViews]).range([width,0]);
 }
+
+async function displayScatterplot(valueName, x_domain, x_ticks, scaleType) {
+d3.select("svg").selectAll("g").remove();
+
+var maxValue = d3.max(data, function(d) { return +d[valueName]; } );
+var x;
+if(scaleType == "log")
+{
+  x = d3.scaleLog().domain(x_domain).range([0,width]);
+}
+else
+{
+  x = d3.scaleLinear().domain(x_domain).range([0,width]);
+}
+
+d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").selectAll("circle").data(data).enter().append("circle")
+.attr("cx",function(d,i){return x(d[valueName]);})
+.attr("cy",function(d,i){return y(d.Views);})
+.attr("r",function(d,i){return 2;})
+d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d3.axisLeft(y).tickValues([230000000, 500000000,1000000000,2000000000,4000000000,8100000000]).tickFormat(d3.format("~s")));
+
+d3.select("svg").append("g").attr("transform","translate("+50+","+(50+width)+")").call(d3.axisBottom(x).tickValues(x_ticks).tickFormat(d3.format("~s")));
+
+  
+//d3.select("body").selectAll("p").data(data).enter().append("p").html(function(d,i){return d.Artist + maxViews;}) 
+}
+
+
+
+
+
+  
+/*
 async function initTempo() {
 d3.select("svg").selectAll("g").remove();
 
@@ -45,7 +78,8 @@ d3.select("svg").append("g").attr("transform","translate("+50+","+(50+width)+")"
 
   
 }
-
+  
+  
 async function initDuration() {
 d3.select("svg").selectAll("g").remove();
 var maxDuration = d3.max(data, function(d) { return +d.Duration_ms; } );
@@ -61,6 +95,8 @@ d3.select("svg").append("g").attr("transform","translate("+50+","+(50+width)+")"
 
 }
 
+
+  
 async function initEnergy() {
 d3.select("svg").selectAll("g").remove();
 //var maxEnergy = d3.max(data, function(d) { return +d.Energy; } );
@@ -102,6 +138,8 @@ d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d
 d3.select("svg").append("g").attr("transform","translate("+50+","+(50+width)+")").call(d3.axisBottom(x).tickValues([0,0.2,0.4,0.6,0.8,1]).tickFormat(d3.format("~s")));
 
 }
+*/
+  
 </script>
 </body>
 </html>
