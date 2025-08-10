@@ -14,22 +14,23 @@
 
 <div>
 </div>
-<svg width=300 height=300>
+<svg width=700 height=700>
 </svg>
 <script>
 
 async function init(){
+  width = 600;
   data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_viewed.csv");
   maxViews = d3.max(data, function(d) { return +d.Views; } );
-  y = d3.scaleLog().domain([230000000,maxViews]).range([200,0]);
+  y = d3.scaleLog().domain([230000000,maxViews]).range([width,0]);
 }
 async function initTempo() {
 d3.select("svg").selectAll("g").remove();
 
 //var maxViews = d3.max(data, function(d) { return +d.Views; } );
 var maxTempo = d3.max(data, function(d) { return +d.Tempo; } );
-//var y = d3.scaleLog().domain([230000000,maxViews]).range([200,0]);
-var x = d3.scaleLog().domain([50,maxTempo]).range([0,200]);
+//var y = d3.scaleLog().domain([230000000,maxViews]).range([width,0]);
+var x = d3.scaleLog().domain([50,maxTempo]).range([0,width]);
 
 d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").selectAll("circle").data(data).enter().append("circle")
 .attr("cx",function(d,i){return x(d.Tempo);})
@@ -37,7 +38,7 @@ d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").select
 .attr("r",function(d,i){return 2;})
 d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d3.axisLeft(y).tickValues([230000000, 500000000,1000000000,2000000000,4000000000,8100000000]).tickFormat(d3.format("~s")));
 
-d3.select("svg").append("g").attr("transform","translate("+50+","+250+")").call(d3.axisBottom(x).tickValues([50,100,150,200]).tickFormat(d3.format("~s")));
+d3.select("svg").append("g").attr("transform","translate("+50+","+(50+width)+")").call(d3.axisBottom(x).tickValues([50,100,150,200]).tickFormat(d3.format("~s")));
 
   
 //d3.select("body").selectAll("p").data(data).enter().append("p").html(function(d,i){return d.Artist + maxViews;})
@@ -48,7 +49,7 @@ d3.select("svg").append("g").attr("transform","translate("+50+","+250+")").call(
 async function initDuration() {
 d3.select("svg").selectAll("g").remove();
 var maxDuration = d3.max(data, function(d) { return +d.Duration_ms; } );
-var x = d3.scaleLog().domain([100000,maxDuration]).range([0,200]);
+var x = d3.scaleLog().domain([100000,maxDuration]).range([0,width]);
 
 d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").selectAll("circle").data(data).enter().append("circle")
 .attr("cx",function(d,i){return x(d.Duration_ms);})
@@ -56,14 +57,14 @@ d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").select
 .attr("r",function(d,i){return 2;})
 d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d3.axisLeft(y).tickValues([230000000, 500000000,1000000000,2000000000,4000000000,8100000000]).tickFormat(d3.format("~s")));
 
-d3.select("svg").append("g").attr("transform","translate("+50+","+250+")").call(d3.axisBottom(x).tickValues([100000,200000,400000,700000]).tickFormat(d3.format("~s")));
+d3.select("svg").append("g").attr("transform","translate("+50+","+(50+width)+")").call(d3.axisBottom(x).tickValues([100000,200000,400000,700000]).tickFormat(d3.format("~s")));
 
 }
 
 async function initEnergy() {
 d3.select("svg").selectAll("g").remove();
 //var maxEnergy = d3.max(data, function(d) { return +d.Energy; } );
-var x = d3.scaleLinear().domain([0,1]).range([0,200]);
+var x = d3.scaleLinear().domain([0,1]).range([0,width]);
 
 d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").selectAll("circle").data(data).enter().append("circle")
 .attr("cx",function(d,i){return x(d.Energy);})
@@ -71,12 +72,12 @@ d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").select
 .attr("r",function(d,i){return 2;})
 d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d3.axisLeft(y).tickValues([230000000, 500000000,1000000000,2000000000,4000000000,8100000000]).tickFormat(d3.format("~s")));
 
-d3.select("svg").append("g").attr("transform","translate("+50+","+250+")").call(d3.axisBottom(x).tickValues([0,0.2,0.4,0.6,0.8,1]).tickFormat(d3.format("~s")));
+d3.select("svg").append("g").attr("transform","translate("+50+","+(50+width)+")").call(d3.axisBottom(x).tickValues([0,0.2,0.4,0.6,0.8,1]).tickFormat(d3.format("~s")));
 
 }
 async function initValence() {
 d3.select("svg").selectAll("g").remove();
-var x = d3.scaleLinear().domain([0,1]).range([0,200]);
+var x = d3.scaleLinear().domain([0,1]).range([0,width]);
 
 d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").selectAll("circle").data(data).enter().append("circle")
 .attr("cx",function(d,i){return x(d.Valence);})
@@ -84,13 +85,13 @@ d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").select
 .attr("r",function(d,i){return 2;})
 d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d3.axisLeft(y).tickValues([230000000, 500000000,1000000000,2000000000,4000000000,8100000000]).tickFormat(d3.format("~s")));
 
-d3.select("svg").append("g").attr("transform","translate("+50+","+250+")").call(d3.axisBottom(x).tickValues([0,0.2,0.4,0.6,0.8,1]).tickFormat(d3.format("~s")));
+d3.select("svg").append("g").attr("transform","translate("+50+","+(50+width)+")").call(d3.axisBottom(x).tickValues([0,0.2,0.4,0.6,0.8,1]).tickFormat(d3.format("~s")));
 
 }
   
 async function initAcousticness() {
 d3.select("svg").selectAll("g").remove();
-var x = d3.scaleLinear().domain([0,1]).range([0,200]);
+var x = d3.scaleLinear().domain([0,1]).range([0,width]);
 
 d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").selectAll("circle").data(data).enter().append("circle")
 .attr("cx",function(d,i){return x(d.Acousticness);})
@@ -98,7 +99,7 @@ d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").select
 .attr("r",function(d,i){return 2;})
 d3.select("svg").append("g").attr("transform","translate("+50+","+50+")").call(d3.axisLeft(y).tickValues([230000000, 500000000,1000000000,2000000000,4000000000,8100000000]).tickFormat(d3.format("~s")));
 
-d3.select("svg").append("g").attr("transform","translate("+50+","+250+")").call(d3.axisBottom(x).tickValues([0,0.2,0.4,0.6,0.8,1]).tickFormat(d3.format("~s")));
+d3.select("svg").append("g").attr("transform","translate("+50+","+(50+width)+")").call(d3.axisBottom(x).tickValues([0,0.2,0.4,0.6,0.8,1]).tickFormat(d3.format("~s")));
 
 }
 </script>
