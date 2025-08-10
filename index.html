@@ -5,8 +5,13 @@
   <h1>Most Popular Songs on Spotify and Youtube</h1>
 </head>
 <body onload = "init()">
-<button onclick='changeData("FullDataset")'>Full Dataset</button>
-<button onclick='changeData("MostViews2000")'>Top 2000</button>
+<button onclick='changeData(-1)'>Full Dataset</button>
+<button onclick='changeData(2000)'>Top 2000</button>
+<div>    </div>
+<button onclick='changeData(0,"Views")'>Youtube Views</button>
+<button onclick='changeData(0,"Stream")'>Spotify Streams</button>
+<div>
+</div>
 <button onclick='plot("Tempo")'>Tempo</button>
 <button onclick='plot("Duration")'>Duration</button>
 <button onclick='plot("Intensity")'>Intensity</button>
@@ -24,34 +29,77 @@ async function init(){
   width = 600;
   margin = 50;
   currentPlot = "Tempo";
-  data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_viewed.csv");
-  maxViews = d3.max(data, function(d) { return +d.Views; } );
-  y = d3.scaleLog().domain([230000000,maxViews]).range([width,0]);
-  y_ticks = [230000000, 500000000,1000000000,2000000000,4000000000,8100000000];
+  currentMetric = "Views";
+  currentDataSize = 2000;
+  changeData(currentDataSize, currentMetric);
 } 
 
-async function changeData(datasetName){
+async function changeData(dataSize = 0, popularityMetric = ""){
+  if(popularityMetric == "Views" || popularityMetric == "Stream" || popularityMetric == "Comments")
+  {
+    currentMetric = popularityMetric;
+  }
+  if(dataSize == -1 || dataSize == 2000 || dataSize == 500)
+  {
+    currentDataSize = dataSize;
+  }
+  //maxViews = d3.max(data, function(d) { return +d[currentMetric]; } );
+  //minViews = d3.min(data, function(d) { return +d[currentMetric]; } );
+
+  if(currentDataSize == -1)
+  {
+    data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset.csv");
+    if(currentMetric == "Views")
+    {
+          y_ticks = [10, 500000000,1000000000,2000000000,4000000000,8100000000];
+          //y = d3.scaleLog().domain([y_ticks[0],y_ticks[y_ticks.length - 1]]).range([width,0]);
+    }
+    else if(currentMetric == "Stream")
+    {
+          y_ticks = [10, 500000000,1000000000,2000000000,3400000000];
+          //y = d3.scaleLog().domain([y_ticks[0],y_ticks[y_ticks.length - 1]]).range([width,0]);
+    }
+  }
+  else if(currentDataSize == 2000)
+  {
+    if(currentMetric == "Views")
+    {
+          data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_viewed.csv");
+          y_ticks = [230000000, 500000000,1000000000,2000000000,4000000000,8100000000];
+    }
+    else if(currentMetric == "Stream")
+    {
+          data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_streamed.csv");
+          y_ticks = [340000000, 500000000,1000000000,2000000000,3400000000];
+
+    }
+    
+  }
+  y = d3.scaleLog().domain([y_ticks[0],y_ticks[y_ticks.length - 1]]).range([width,0]);
+  plot(currentPlot);
+
+  /*
   switch(datasetName)
   {
     case "MostViews2000":
       data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_viewed.csv");
-      maxViews = d3.max(data, function(d) { return +d.Views; } );
       y = d3.scaleLog().domain([230000000,maxViews]).range([width,0]);
       y_ticks = [230000000, 500000000,1000000000,2000000000,4000000000,8100000000];
       break;
-    case "FullDataset":
+    case "FullDatasetViews":
       data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset.csv");
-      maxViews = d3.max(data, function(d) { return +d.Views; } );
       y = d3.scaleLog().domain([10,maxViews]).range([width,0]);
       y_ticks = [10, 500000000,1000000000,2000000000,4000000000,8100000000];
       break;
+
+      
     default:
       data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_viewed.csv");
-      maxViews = d3.max(data, function(d) { return +d.Views; } );
+      //maxViews = d3.max(data, function(d) { return +d.Views; } );
       y = d3.scaleLog().domain([230000000,maxViews]).range([width,0]);
       y_ticks = [230000000, 500000000,1000000000,2000000000,4000000000,8100000000];
   }
-  plot(currentPlot);
+  */
 }
 
   
@@ -116,7 +164,7 @@ else
 
 d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")").selectAll("circle").data(data).enter().append("circle")
 .attr("cx",function(d,i){return x(d[valueName]);})
-.attr("cy",function(d,i){return y(d.Views);})
+.attr("cy",function(d,i){return y(d[currentMetric]);})
 .attr("r",function(d,i){return 2;})
 d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")").call(d3.axisLeft(y).tickValues(y_ticks).tickFormat(d3.format("~s")));
 
