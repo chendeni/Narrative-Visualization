@@ -5,7 +5,8 @@
   <h1>Most Popular Songs on Spotify and Youtube</h1>
 </head>
 <body onload = "init()">
-  
+<button onclick='changeData("FullDataset")'>Full Dataset</button>
+<button onclick='changeData("MostViews2000")'>Top 2000</button>
 <button onclick='plot("Tempo")'>Tempo</button>
 <button onclick='plot("Duration")'>Duration</button>
 <button onclick='plot("Intensity")'>Intensity</button>
@@ -28,6 +29,30 @@ async function init(){
   y = d3.scaleLog().domain([230000000,maxViews]).range([width,0]);
   y_ticks = [230000000, 500000000,1000000000,2000000000,4000000000,8100000000];
 } 
+
+async function changeData(datasetName){
+  switch(datasetName)
+  {
+    case "MostViews2000":
+      data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_viewed.csv");
+      maxViews = d3.max(data, function(d) { return +d.Views; } );
+      y = d3.scaleLog().domain([230000000,maxViews]).range([width,0]);
+      y_ticks = [230000000, 500000000,1000000000,2000000000,4000000000,8100000000];
+      break;
+    case "FullDataset":
+      data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset.csv");
+      maxViews = d3.max(data, function(d) { return +d.Views; } );
+      y = d3.scaleLog().domain([10,maxViews]).range([width,0]);
+      y_ticks = [10, 500000000,1000000000,2000000000,4000000000,8100000000];
+      break;
+    default:
+      data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_viewed.csv");
+      maxViews = d3.max(data, function(d) { return +d.Views; } );
+      y = d3.scaleLog().domain([230000000,maxViews]).range([width,0]);
+      y_ticks = [230000000, 500000000,1000000000,2000000000,4000000000,8100000000];
+  }
+  plot(currentPlot);
+}
 
   
 async function plot(plotName){
