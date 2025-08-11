@@ -34,6 +34,12 @@ button {
   border-radius: 4px;
   border-color: gray;
 }
+#Top2000{
+  margin-right: 50px; 
+}
+#Stream{
+  margin-right: 50px; 
+}
 </style>
 
 <head>
@@ -42,9 +48,11 @@ button {
 <body onload = "init()">
 <button id = "Full" onclick='changeData(-1)'>Full Dataset</button>
 <button id = "Top2000" onclick='changeData(2000)'>Top 2000</button>
-<div>    </div>
 <button id = "Views" onclick='changeData(0,"Views")'>Youtube Views</button>
 <button id = "Stream" onclick='changeData(0,"Stream")'>Spotify Streams</button>
+<button id = "Replay" onclick='updateStory(1)'>Replay Story</button>
+
+  
 <div>
 </div>
 <button id = "Tempo" onclick='plot("Tempo")'>Tempo</button>
@@ -65,7 +73,7 @@ button {
 async function init(){
   width = 600;
   margin = 50;
-  //maxPageNum = 2;
+  maxPageNum = 3;
   currentPlot = "Tempo";
   currentMetric = "Views";
   currentDataSize = 2000;
@@ -75,6 +83,14 @@ async function init(){
 } 
 
 async function updateStory(pageNum){
+  if(pageNum>0)
+  {
+      d3.select("#Replay").attr("disabled",true).style("opacity",0);
+  }
+  else
+  {
+      d3.select("#Replay").attr("disabled",null).style("opacity",1);
+  }
   currentPageNum = pageNum;
   switch(pageNum)
   {
@@ -89,6 +105,7 @@ async function updateStory(pageNum){
       break;
     default:
       displayAnnotation("hide");
+
 
   }
   
@@ -110,6 +127,11 @@ async function displayAnnotation(state, position_x = 0, position_y = 0, text = "
     {
       annotation.append("button").html("Previous").attr("onclick", 'updateStory(+currentPageNum-1)');
     }
+    else
+    {
+      annotation.append("button").html("Previous").attr("disabled", true);
+    }
+    annotation.append("label").style("display", "inline-block").style("vertical-align", "middle").style("margin", "0 60px").html("Page "+currentPageNum+"/"+maxPageNum);
     if(state != "last")
     {
       annotation.append("button").style("float", "right").html("Next").attr("onclick", 'updateStory(+currentPageNum+1)');
