@@ -1,6 +1,22 @@
+
 <html>
 <script src='https://d3js.org/d3.v5.min.js'></script>
-<style> circle {fill: lightblue; stroke: black;} </style>
+<style> circle {fill: lightblue; stroke: black;} 
+#tooltip {
+  opacity: 0;
+  position: absolute;
+  text-align: left;
+  text-wrap: nowrap;
+  padding-left: 3px;
+  width: fit-content;
+  height: 100px;
+  background: white;
+  border: solid;
+  border-width: 2px;
+  border-color: black;
+}
+</style>
+
 <head>
   <h1>Most Popular Songs on Spotify and Youtube</h1>
 </head>
@@ -23,6 +39,7 @@
 </div>
 <svg width=700 height=700>
 </svg>
+<div id = "tooltip"></div>
 <script>
 
 async function init(){
@@ -171,6 +188,7 @@ d3.select("svg").selectAll("g").remove();
 d3.select("svg").selectAll("text").remove();
 
   //var maxValue = d3.max(data, function(d) { return +d[valueName]; } );
+  var tooltip = d3.select("#tooltip");
   
 var x;
 if(scaleType == "log")
@@ -181,11 +199,13 @@ else
 {
   x = d3.scaleLinear().domain(x_domain).range([0,width]);
 }
-
+//svg_coords = d3.select("svg").getBoundingClientRect();
 d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")").selectAll("circle").data(data).enter().append("circle")
 .attr("cx",function(d,i){return x(d[valueName]);})
 .attr("cy",function(d,i){return y(d[currentMetric]);})
 .attr("r",function(d,i){return 2;})
+.on("mouseover", function(d,i){tooltip.style("opacity", 1).style("height", (100)+"px").style("left", (x(d[valueName])+70)+"px").style("top", (y(d[currentMetric])+210)+"px").html("Artist: "+d["Artist"]+"</br>Track: "+d["Track"]+"</br>"+y_label+": "+d[currentMetric]+"</br>"+x_label+": "+d[valueName]); d3.select(this).style("stroke", "orange").style("fill", "orange"); })
+.on("mouseout", function(d,i){tooltip.style("opacity", 0).style("height", (0)+"px").html(""); d3.select(this).style("stroke", "black").style("fill", "lightblue");});
 d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")").call(d3.axisLeft(y).tickValues(y_ticks).tickFormat(d3.format("~s")));
 
 d3.select("svg").append("g").attr("transform","translate("+margin+","+(margin+width)+")").call(d3.axisBottom(x).tickValues(x_ticks).tickFormat(d3.format(x_format)));
