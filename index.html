@@ -65,19 +65,60 @@ button {
 async function init(){
   width = 600;
   margin = 50;
+  //maxPageNum = 2;
   currentPlot = "Tempo";
   currentMetric = "Views";
   currentDataSize = 2000;
+  currentPageNum = 1;
   changeData(currentDataSize, currentMetric);
-
-  displayAnnotation("default", 200, 200, "annotation 1111111111111111111111111111111111");
+  updateStory(1);
 } 
 
-async function displayAnnotation(state, position_x, position_y, text){
-  var annotation = d3.select("#annotation").style("opacity", 1).style("left", (position_x)+"px").style("top", (position_x)+"px");
-  annotation.html(text+"<br/>");
-  annotation.append("button").html("Previous").attr("onclick", 'changeData(-1)');
-  annotation.append("button").style("float", "right").html("Next");
+async function updateStory(pageNum){
+  currentPageNum = pageNum;
+  switch(pageNum)
+  {
+    case 1:
+      displayAnnotation("first", 200, 200, "annotation 1111111111111111111111111111111111");
+      break
+    case 2:
+      displayAnnotation("default", 200, 300, "annotation 2");
+      break;
+    case 3:
+      displayAnnotation("last", 200, 300, "annotation 3");
+      break;
+    default:
+      displayAnnotation("hide");
+
+  }
+  
+}
+
+async function displayAnnotation(state, position_x = 0, position_y = 0, text = ""){
+  var annotation = d3.select("#annotation");
+  annotation.selectAll("button").remove();
+  if(state == "hide")
+  {
+    annotation.style("opacity", 0).style("left", (0)+"px").style("top", (0)+"px").attr("width",(0)+"px");
+    annotation.html("");
+  }
+  else
+  {
+    annotation.style("opacity", 1).style("left", (position_x)+"px").style("top", (position_y)+"px");
+    annotation.html(text+"<br/>");
+    if(state != "first")
+    {
+      annotation.append("button").html("Previous").attr("onclick", 'updateStory(+currentPageNum-1)');
+    }
+    if(state != "last")
+    {
+      annotation.append("button").style("float", "right").html("Next").attr("onclick", 'updateStory(+currentPageNum+1)');
+    }
+    else
+    {
+      annotation.append("button").style("float", "right").html("Finish").attr("onclick", 'updateStory(0)');
+    }
+  }
 }
 
 async function changeData(dataSize = 0, popularityMetric = ""){
