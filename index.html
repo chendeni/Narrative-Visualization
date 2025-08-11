@@ -21,23 +21,23 @@
   <h1>Most Popular Songs on Spotify and Youtube</h1>
 </head>
 <body onload = "init()">
-<button onclick='changeData(-1)'>Full Dataset</button>
-<button onclick='changeData(2000)'>Top 2000</button>
+<button id = "Full" onclick='changeData(-1)'>Full Dataset</button>
+<button id = "Top2000" onclick='changeData(2000)'>Top 2000</button>
 <div>    </div>
-<button onclick='changeData(0,"Views")'>Youtube Views</button>
-<button onclick='changeData(0,"Stream")'>Spotify Streams</button>
+<button id = "Views" onclick='changeData(0,"Views")'>Youtube Views</button>
+<button id = "Stream" onclick='changeData(0,"Stream")'>Spotify Streams</button>
 <div>
 </div>
-<button onclick='plot("Tempo")'>Tempo</button>
-<button onclick='plot("Duration")'>Duration</button>
-<button onclick='plot("Intensity")'>Intensity</button>
-<button onclick='plot("Valence")'>Valence</button>
-<button onclick='plot("Acousticness")'>Acousticness</button>
-<button onclick='plot("Loudness")'>Loudness</button>
+<button id = "Tempo" onclick='plot("Tempo")'>Tempo</button>
+<button id = "Duration" onclick='plot("Duration")'>Duration</button>
+<button id = "Intensity" onclick='plot("Intensity")'>Intensity</button>
+<button id = "Valence" onclick='plot("Valence")'>Valence</button>
+<button id = "Acousticness" onclick='plot("Acousticness")'>Acousticness</button>
+<button id = "Loudness" onclick='plot("Loudness")'>Loudness</button>
 
 <div>
 </div>
-<svg width=700 height=700>
+<svg width=700 height=800>
 </svg>
 <div id = "tooltip"></div>
 <script>
@@ -60,8 +60,7 @@ async function changeData(dataSize = 0, popularityMetric = ""){
   {
     currentDataSize = dataSize;
   }
-  //maxViews = d3.max(data, function(d) { return +d[currentMetric]; } );
-  //minViews = d3.min(data, function(d) { return +d[currentMetric]; } );
+
 
   if(currentDataSize == -1)
   {
@@ -99,28 +98,7 @@ async function changeData(dataSize = 0, popularityMetric = ""){
   y = d3.scaleLog().domain([y_ticks[0],y_ticks[y_ticks.length - 1]]).range([width,0]);
   plot(currentPlot);
 
-  /*
-  switch(datasetName)
-  {
-    case "MostViews2000":
-      data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_viewed.csv");
-      y = d3.scaleLog().domain([230000000,maxViews]).range([width,0]);
-      y_ticks = [230000000, 500000000,1000000000,2000000000,4000000000,8100000000];
-      break;
-    case "FullDatasetViews":
-      data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset.csv");
-      y = d3.scaleLog().domain([10,maxViews]).range([width,0]);
-      y_ticks = [10, 500000000,1000000000,2000000000,4000000000,8100000000];
-      break;
 
-      
-    default:
-      data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_viewed.csv");
-      //maxViews = d3.max(data, function(d) { return +d.Views; } );
-      y = d3.scaleLog().domain([230000000,maxViews]).range([width,0]);
-      y_ticks = [230000000, 500000000,1000000000,2000000000,4000000000,8100000000];
-  }
-  */
 }
 
   
@@ -163,25 +141,23 @@ async function plot(plotName){
     default:
       displayScatterplot("Tempo", [50,200], [50,100,150,200], "Tempo (BPM)", ".2f", "log");
   }
-  /*
-  switch(plotName)
-  {
-    case "Tempo":
-      valueName = "Tempo";
-      x_domain = [50,200];
-      x_ticks = [50,100,150,200];
-      scaleType = "log";
-      break;
-    default:
-      valueName = "Tempo";
-      x_domain = [50,200];
-      x_ticks = [50,100,150,200];
-      scaleType = "log";
-  }
-    displayScatterplot(valueName, x_domain, x_ticks, scaleType);
-  */
+  updateButtons();
 }
+  
+async function updateButtons(){
+  d3.selectAll("button").style("background-color", "white");
+  d3.select("#"+currentPlot).style("background-color", "lightblue");
+  d3.select("#"+currentMetric).style("background-color", "lightblue");
+  if(currentDataSize == -1)
+  {
+    d3.select("#Full").style("background-color", "lightblue");
+  }
+  else if(currentDataSize == 2000)
+  {
+    d3.select("#Top2000").style("background-color", "lightblue");
+  }
 
+}
   
 async function displayScatterplot(valueName, x_domain, x_ticks, x_label, x_format, scaleType) {
 d3.select("svg").selectAll("g").remove();
