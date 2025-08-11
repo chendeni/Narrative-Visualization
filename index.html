@@ -33,6 +33,7 @@
 button {
   border-radius: 4px;
   border-color: gray;
+  margin-bottom: 3px; 
 }
 #Top2000{
   margin-right: 50px; 
@@ -73,7 +74,7 @@ button {
 async function init(){
   width = 600;
   margin = 50;
-  maxPageNum = 3;
+  maxPageNum = 5;
   currentPlot = "Tempo";
   currentMetric = "Views";
   currentDataSize = 2000;
@@ -97,15 +98,35 @@ async function updateStory(pageNum){
   switch(pageNum)
   {
     case 1:
-      displayAnnotation("first", 200, 200, "annotation 1111111111111111111111111111111111");
-      changeData(2000, "Views");
-      plot("Tempo");
+      displayAnnotation("first", 200, 200, "What makes a song successful? What aspects of a song contributes to its popularity the most?");
       break
     case 2:
-      displayAnnotation("default", 200, 300, "annotation 2");
+      displayAnnotation("default", 200, 300, "This scatter plot shows the number of times a song is listened to on Youtube and its tempo. There is not much correlation between a song's tempo and its popularity.");
+      changeData(2000, "Views");
+      plot("Tempo");
       break;
     case 3:
-      displayAnnotation("last", 200, 300, "annotation 3");
+      displayAnnotation("default", 200, 300, "Let's try another one.  How does a song's timbre affect its popularity? Songs with mostly synthesized instruments, mostly acoustic instruments, or a mix? ");
+      changeData(2000, "Views");
+      plot("Acousticness");
+      break;
+    case 4:
+      displayAnnotation("default", 200, 300, "Most of the top songs are close to 0 in acousticness, so there is a strong correlation between popularity and the use of synthesized instruments.");
+      changeData(2000, "Views");
+      plot("Acousticness");
+      break;
+    case 5:
+      displayAnnotation("default", 200, 300, "What is the best length for a song? The most popular songs are around 3:30 to 4 minutes in length. Songs that are too long or too short are not as popular.");
+      changeData(2000, "Views");
+      plot("Duration");
+      break;
+    case 6:
+      displayAnnotation("default", 200, 300, "What are the names of the most streamed songs on Spotify? Move the cursor over the points for more details.");
+      changeData(2000, "Stream");
+      break;
+    case 7:
+      displayAnnotation("last", 200, 300, "How long is the longest song in the dataset?");
+      changeData(2000, "Stream");
       break;
     default:
       displayAnnotation("hide");
@@ -118,6 +139,7 @@ async function updateStory(pageNum){
 async function displayAnnotation(state, position_x = 0, position_y = 0, text = ""){
   var annotation = d3.select("#annotation");
   annotation.selectAll("button").remove();
+
   if(state == "hide")
   {
     annotation.style("opacity", 0).style("left", (0)+"px").style("top", (0)+"px").attr("width",(0)+"px");
@@ -203,7 +225,7 @@ async function plot(plotName){
   switch(plotName)
   {
     case "Tempo":
-      displayScatterplot("Tempo", [50,200], [50,100,150,200], "Tempo (BPM)",".0f", "log");
+      displayScatterplot("Tempo", [50,200], [50,100,150,200], "Tempo (BPM)",".0f", "linear");
       break;
     case "Duration":
       if(currentDataSize == -1)
