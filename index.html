@@ -8,8 +8,23 @@
   text-align: left;
   text-wrap: nowrap;
   padding-left: 3px;
+  padding-right: 3px;
   width: fit-content;
   height: 100px;
+  background: white;
+  border: solid;
+  border-width: 2px;
+  border-color: black;
+}
+#annotation {
+  opacity: 0;
+  position: absolute;
+  text-align: left;
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-bottom: 3px;
+  width: 300px;
+  height: auto;
   background: white;
   border: solid;
   border-width: 2px;
@@ -44,6 +59,7 @@ button {
 <svg width=700 height=800>
 </svg>
 <div id = "tooltip"></div>
+<div id = "annotation"></div>
 <script>
 
 async function init(){
@@ -53,7 +69,16 @@ async function init(){
   currentMetric = "Views";
   currentDataSize = 2000;
   changeData(currentDataSize, currentMetric);
+
+  displayAnnotation("default", 200, 200, "annotation 1111111111111111111111111111111111");
 } 
+
+async function displayAnnotation(state, position_x, position_y, text){
+  var annotation = d3.select("#annotation").style("opacity", 1).style("left", (position_x)+"px").style("top", (position_x)+"px");
+  annotation.html(text+"<br/>");
+  annotation.append("button").html("Previous").attr("onclick", 'changeData(-1)');
+  annotation.append("button").style("float", "right").html("Next");
+}
 
 async function changeData(dataSize = 0, popularityMetric = ""){
   if(popularityMetric == "Views" || popularityMetric == "Stream" || popularityMetric == "Comments")
