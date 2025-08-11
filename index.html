@@ -85,17 +85,21 @@ async function init(){
 async function updateStory(pageNum){
   if(pageNum>0)
   {
-      d3.select("#Replay").attr("disabled",true).style("opacity",0);
+      d3.selectAll("button").attr("disabled",true)
+      d3.select("#Replay").style("opacity",0);
   }
   else
   {
-      d3.select("#Replay").attr("disabled",null).style("opacity",1);
+      d3.selectAll("button").attr("disabled",null)
+      d3.select("#Replay").style("opacity",1);
   }
   currentPageNum = pageNum;
   switch(pageNum)
   {
     case 1:
       displayAnnotation("first", 200, 200, "annotation 1111111111111111111111111111111111");
+      changeData(2000, "Views");
+      plot("Tempo");
       break
     case 2:
       displayAnnotation("default", 200, 300, "annotation 2");
