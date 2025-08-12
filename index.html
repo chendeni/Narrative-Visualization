@@ -334,7 +334,7 @@ d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")"
 .attr("cx",function(d,i){return x(d[valueName]);})
 .attr("cy",function(d,i){return y(d[currentMetric]);})
 .attr("r",function(d,i){return 2;})
-.on("mouseover", function(d,i){tooltip.style("opacity", 1).style("height", (100)+"px").style("left", (x(d[valueName])+70)+"px").style("top", (y(d[currentMetric])+210)+"px").html("Artist: "+d["Artist"]+"</br>Track: "+d["Track"]+"</br>"+y_label+": "+d[currentMetric]+"</br>"+x_label+": "+d[valueName]); d3.select(this).style("stroke", "orange").style("fill", "orange"); })
+.on("mouseover", function(d,i){tooltip.style("opacity", 1).style("height", (80)+"px").style("left", (x(d[valueName])+70)+"px").style("top", (y(d[currentMetric])+210)+"px").html("Artist: "+d["Artist"]+"</br>Track: "+d["Track"]+"</br>"+y_label+": "+d[currentMetric]+"</br>"+x_label+": "+d[valueName]); d3.select(this).style("stroke", "orange").style("fill", "orange"); })
 .on("mouseout", function(d,i){tooltip.style("opacity", 0).style("height", (0)+"px").html(""); d3.select(this).style("stroke", "black").style("fill", "lightblue");});
 d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")").call(d3.axisLeft(y).tickValues(y_ticks).tickFormat(d3.format("~s")));
 
