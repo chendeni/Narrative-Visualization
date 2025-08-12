@@ -54,7 +54,7 @@ button[disabled]{
 
 }
 #Top2000{
-  margin-right: 50px; 
+  margin-right: 170px; 
 }
 #Stream{
   margin-right: 50px; 
@@ -67,11 +67,11 @@ button[disabled]{
 <body onload = "init()">
 <button id = "Full" onclick='changeData(-1)'>Full Dataset</button>
 <button id = "Top2000" onclick='changeData(2000)'>Top 2000</button>
+<button id = "Replay" onclick='updateStory(1)'>Replay Demo</button>
+<div>
+</div>
 <button id = "Views" onclick='changeData(0,"Views")'>Youtube Views</button>
 <button id = "Stream" onclick='changeData(0,"Stream")'>Spotify Streams</button>
-<button id = "Replay" onclick='updateStory(1)'>Replay Demo</button>
-
-  
 <div>
 </div>
 <button id = "Tempo" onclick='plot("Tempo")'>Tempo</button>
