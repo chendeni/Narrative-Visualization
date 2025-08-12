@@ -101,32 +101,32 @@ async function updateStory(pageNum){
       displayAnnotation("first", 200, 150, "What makes a song successful? What aspects of a song contributes to its popularity the most?");
       break
     case 2:
-      displayAnnotation("default", 450, 80, "This scatter plot shows the number of times a song is listened to on Youtube and its tempo.<br/>There is not much correlation between a song's tempo and its view count.");
+      displayAnnotation("default", 460, 70, "This scatter plot shows the number of times a song is listened to on Youtube and its tempo.<br/>There is not much correlation between a song's tempo and its view count.");
       changeData(2000, "Views");
       plot("Tempo");
       break;
     case 3:
-      displayAnnotation("default", 450, 80, "Let's try another one.  How does a song's timbre affect its popularity? Songs with mostly synthesized instruments, mostly acoustic instruments, or a mix of both?");
+      displayAnnotation("default", 460, 70, "Let's try another one.  How does a song's timbre affect its popularity? Songs with mostly synthesized instruments, mostly acoustic instruments, or a mix of both?");
       changeData(2000, "Views");
       plot("Acousticness");
       break;
     case 4:
-      displayAnnotation("default", 450, 80, "It seems that most of the top songs use synthesized instruments. What about the songs with less than 2.3M views");
+      displayAnnotation("default", 460, 70, "It seems that most of the top songs use synthesized instruments. What about the songs with less than 2.3M views");
       changeData(2000, "Views");
       plot("Acousticness");
       break;
     case 5:
-      displayAnnotation("default", 450, 80, "Most of the less popular songs are either mostly synthesized or mostly acoustic. There are not as many that have an even mix of both.");
+      displayAnnotation("default", 460, 70, "Most of the less popular songs are either mostly synthesized or mostly acoustic. There are not as many that have an even mix of both.");
       changeData(-1, "Views");
       plot("Acousticness");
       break;
     case 6:
-      displayAnnotation("default", 450, 80, "What is the best length for a song? There are a lot more songs at around 3:30 minutes in length. There are not many songs that are too long or too short");
+      displayAnnotation("default", 460, 70, "What is the best length for a song? There are a lot more songs at around 3:30 minutes in length. There are not many songs that are too long or too short");
       changeData(2000, "Views");
       plot("Duration");
       break;
     case 7:
-      displayAnnotation("default", 450, 80, "What are the most streamed songs on Spotify? If you want to know the name of a song, move the cursor over the points for more details.");
+      displayAnnotation("default", 460, 70, "What are the most streamed songs on Spotify? If you want to know the name of a song, move the cursor over the points for more details.");
       changeData(2000, "Stream");
       break;
     case 8:
