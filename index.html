@@ -30,6 +30,13 @@
   border-width: 2px;
   border-color: black;
 }
+#guide {
+  opacity: 0;
+  position: absolute;
+  border: solid;
+  border-width: 2px;
+  border-color: red;
+}
 button {
   border-radius: 4px;
   border-color: gray;
@@ -69,6 +76,7 @@ button {
 </svg>
 <div id = "tooltip"></div>
 <div id = "annotation"></div>
+<div id = "guide"></div>
 <script>
 
 async function init(){
@@ -88,6 +96,8 @@ async function init(){
 } 
 
 async function updateStory(pageNum){
+  d3.select("#guide").style("opacity", 0).style("left", (0)+"px").style("top", (0)+"px").style("width",(0)+"px").style("height",(0)+"px");
+
   if(pageNum>0)
   {
       d3.selectAll("button").attr("disabled",true)
@@ -116,25 +126,32 @@ async function updateStory(pageNum){
       break;
     case 4:
       displayAnnotation("default", 460, 70, "It seems that most of the top songs use synthesized instruments. What about the songs with less than 2.3M views?");
+      d3.select("#guide").style("opacity", 1).style("fill-opacity",0).style("left", (50)+"px").style("top", (500)+"px").style("width",(100)+"px").style("height",(300)+"px");
+
       changeData(2000, "Views");
       plot("Acousticness");
       break;
     case 5:
       displayAnnotation("default", 460, 70, "This is the full dataset with almost 20000 songs. Most of the less popular songs are either mostly synthesized or mostly acoustic. There are not as many that have an even mix of both.");
+      d3.select("#guide").style("opacity", 1).style("fill-opacity",0).style("left", (200)+"px").style("top", (550)+"px").style("width",(300)+"px").style("height",(200)+"px");
       changeData(-1, "Views");
       plot("Acousticness");
       break;
     case 6:
       displayAnnotation("default", 460, 70, "What is the best length for a song? There are a lot more songs at around 3:30 minutes in length. There are not many songs that are too long or too short.");
+      d3.select("#guide").style("opacity", 1).style("fill-opacity",0).style("left", (300)+"px").style("top", (175)+"px").style("width",(0)+"px").style("height",(600)+"px");
       changeData(2000, "Views");
       plot("Duration");
       break;
     case 7:
       displayAnnotation("default", 460, 70, "What are the most streamed songs on Spotify? If you want to know the name of a song, move the cursor over the points for more details.");
+      d3.select("#guide").style("opacity", 1).style("fill-opacity",0).style("left", (250)+"px").style("top", (150)+"px").style("width",(100)+"px").style("height",(50)+"px");
+
       changeData(2000, "Stream");
       break;
     case 8:
       displayAnnotation("last", 200, 150, "You have made it to the end of the demo. Click on the buttons above to start exploring.");
+      d3.select("#guide").style("opacity", 1).style("fill-opacity",0).style("left", (0)+"px").style("top", (70)+"px").style("width",(450)+"px").style("height",(60)+"px");
       break;
     default:
       displayAnnotation("hide");
