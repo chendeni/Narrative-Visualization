@@ -72,6 +72,10 @@ button {
 <script>
 
 async function init(){
+  dataFull = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset.csv");
+  dataTopViews2000 = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_viewed.csv");
+  dataTopStream2000 = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_streamed.csv");
+
   width = 600;
   margin = 50;
   maxPageNum = 8;
@@ -186,7 +190,7 @@ async function changeData(dataSize = 0, popularityMetric = ""){
 
   if(currentDataSize == -1)
   {
-    data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset.csv");
+    data = dataFull;
     if(currentMetric == "Views")
     {
           y_label = "View Count";
@@ -205,13 +209,13 @@ async function changeData(dataSize = 0, popularityMetric = ""){
     if(currentMetric == "Views")
     {
           y_label = "View Count";
-          data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_viewed.csv");
+          data = dataTopViews2000;
           y_ticks = [230000000, 500000000,1000000000,2000000000,4000000000,8100000000];
     }
     else if(currentMetric == "Stream")
     {
           y_label = "Stream Count";
-          data = await d3.csv("https://chendeni.github.io/Narrative-Visualization/spotify_youtube_dataset_most_streamed.csv");
+          data = dataTopStream2000;
           y_ticks = [340000000, 500000000,1000000000,2000000000,3400000000];
 
     }
