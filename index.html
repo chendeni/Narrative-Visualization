@@ -190,13 +190,13 @@ async function changeData(dataSize = 0, popularityMetric = ""){
     if(currentMetric == "Views")
     {
           y_label = "View Count";
-          y_ticks = [100, 500000000,1000000000,2000000000,4000000000,8100000000];
+          y_ticks = [100,1000,10000,100000, 1000000,10000000,100000000,1000000000,8100000000];
           //y = d3.scaleLog().domain([y_ticks[0],y_ticks[y_ticks.length - 1]]).range([width,0]);
     }
     else if(currentMetric == "Stream")
     {
           y_label = "Stream Count";
-          y_ticks = [100, 500000000,1000000000,2000000000,3400000000];
+          y_ticks = [100,1000,10000,100000, 1000000,10000000,100000000,1000000000,3400000000];
           //y = d3.scaleLog().domain([y_ticks[0],y_ticks[y_ticks.length - 1]]).range([width,0]);
     }
   }
