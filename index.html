@@ -238,11 +238,11 @@ async function plot(plotName){
     case "Duration":
       if(currentDataSize == -1)
       {
-        displayScatterplot("Duration_ms", [40000,700000], [40000,100000,200000,400000,700000],"Duration (seconds)", "~s", "log");
+        displayScatterplot("Duration_ms", [40000,700000], [40000,100000,200000,400000,700000],"Duration (ms)", "~s", "log");
       }
       else
       {
-        displayScatterplot("Duration_ms", [100000,700000], [100000,200000,400000,700000],"Duration (seconds)", "~s", "log");
+        displayScatterplot("Duration_ms", [100000,700000], [100000,200000,400000,700000],"Duration (ms)", "~s", "log");
       }
       break;
     case "Intensity":
